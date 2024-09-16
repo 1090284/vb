@@ -1,0 +1,122 @@
+<html><head><base href="https://kmuhods.kmuh.edu.tw/"><title>高雄醫學大學附設醫院口腔衛生科自動回覆系統</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f8ff;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  max-width: 600px;
+  width: 100%;
+}
+h1 {
+  color: #0056b3;
+  text-align: center;
+}
+.chat-container {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  height: 300px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+.message {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 4px;
+}
+.user {
+  background-color: #e6f2ff;
+  text-align: right;
+}
+.bot {
+  background-color: #f0f0f0;
+}
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+button {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #003d82;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>高醫口腔衛生科自動回覆系統</h1>
+  <div class="chat-container" id="chatContainer"></div>
+  <input type="text" id="userInput" placeholder="請輸入您的問題...">
+  <button onclick="sendMessage()">發送</button>
+</div>
+
+<script>
+const chatContainer = document.getElementById('chatContainer');
+const userInput = document.getElementById('userInput');
+
+function addMessage(message, isUser) {
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('message');
+  messageDiv.classList.add(isUser ? 'user' : 'bot');
+  messageDiv.textContent = message;
+  chatContainer.appendChild(messageDiv);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+function sendMessage() {
+  const message = userInput.value.trim();
+  if (message) {
+    addMessage(message, true);
+    userInput.value = '';
+    setTimeout(() => botReply(message), 1000);
+  }
+}
+
+function botReply(message) {
+  const lowerMessage = message.toLowerCase();
+  let reply = '';
+
+  if (lowerMessage.includes('預約') || lowerMessage.includes('掛號')) {
+    reply = '您可以撥打(07)3121101轉6751或至高醫口腔醫學院一樓掛號櫃檯掛號。線上掛號請至高醫e院後申請成為會員後即可線上掛號。';
+  } else if (lowerMessage.includes('地址') || lowerMessage.includes('位置')) {
+    reply = '我們位於高雄市三民區十全一路100號，高雄醫學大學附設醫院內。';
+  } else if (lowerMessage.includes('營業時間') || lowerMessage.includes('看診時間')) {
+    reply = '我們的門診時間為週一至週五 8:30-17:30，週六 8:30-12:00。請注意，實際看診時間可能會有變動，建議您先來電確認。';
+  } else if (lowerMessage.includes('服務項目') || lowerMessage.includes('治療')) {
+    reply = '我們提供全方位的口腔衛生服務，包括口腔檢查、洗牙、口腔衛教等。如需更詳細的資訊，建議您直接諮詢我們的專業醫師。';
+  } else {
+    reply = '很抱歉，我無法回答您的問題。如有更多疑問，請撥打(07)3121101轉6751與我們聯繫，或直接來院諮詢。';
+  }
+
+  addMessage(reply, false);
+}
+
+userInput.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});
+</script>
+</body></html>
